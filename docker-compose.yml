@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   web:
     build:
       context: .
@@ -10,7 +9,9 @@ services:
       - "8080:80"
     volumes:
       - .:/app/
-    links:
+    networks:
+      - my_network
+    depends_on:
       - php
 
   php:
@@ -19,3 +20,8 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app/
+    networks:
+      - my_network
+
+networks:
+  my_network:
