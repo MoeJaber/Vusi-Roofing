@@ -4,7 +4,8 @@ services:
   web:
     build:
       context: .
-      dockerfile: docker/nginx/Dockerfile
+      dockerfile: gcr.io/vusi-roofing-web/php
+      #dockerfile: docker/nginx/Dockerfile
     ports:
       - "8080:80"
     volumes:
@@ -17,7 +18,8 @@ services:
   php:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
+      dockerfile: gcr.io/vusi-roofing-web/nginx
+      #dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app/
     networks:
