@@ -1,6 +1,30 @@
- steps:
-  # running docker-compose
-  - name: 'docker/compose:latest'
-    args: ['-f', 'docker-compose.yml', 'up', '-d']
- options:
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'compose'
+      - 'build'
+      - '--parallel'
+
+  # Push the Docker image to Container Registry (replace 'your-gcp-project' and 'your-image-name' with your actual project and image names)
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/vusi-roofing/vusi-roofing'
+
+  # Deploy the Docker Compose project to Cloud Run (replace 'your-service-name' with your actual service name)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'vusi-roofing'
+      - '--image'
+      - 'gcr.io/vusi-roofing/vusi-roofing'
+      - '--platform'
+      - 'managed'
+      - '--region'
+      - 'northamerica-northeast1'
+
+options:
   logging: CLOUD_LOGGING_ONLY
+
