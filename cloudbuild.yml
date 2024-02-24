@@ -23,9 +23,12 @@ steps:
     args:
       - push
       - 'gcr.io/$PROJECT_ID/vusi-roofing-web/php:latest'
+  - name: 'docker/compose:1.26.2'
+    args: ['up', '-d']
    # Deploy using Docker Compose
-  - name: 'gcr.io/cloud-builders/docker-compose'
-    args: ['-f', 'docker-compose.yaml', 'up', '-d']
+  # -name: 'docker'
+  #  args: ['run', '--rm', '-v', '/workspace:/app', 'gcr.io/cloud-builders/docker-compose', '-f', 'docker-compose.yaml', 'up', '-d']
+  #  dir: '/workspace' 
   # - name: gcr.io/cloud-builders/gcloud
   #   args:
   #     - run
