@@ -1,19 +1,21 @@
 <?php
-		if(isset($_POST['contact_submit']) && $_POST['contact_submit'] != ''){
+		if(isset($_POST['submit']) && $_POST['submit'] != ''){
 
 			// Contact form message functionality
-			if(isset($_POST['contact_submit']) && !empty($_POST['contact_submit'])){ 
+			if(isset($_POST['submit']) && !empty($_POST['submit'])){
 				// PREPARE THE BODY OF THE MESSAGE
 				$message = '<html><body>';
 				$message .= 'Vusi Roofing - Hi admin, you got a new query from your website.';
 				$message .= '<table rules="all" style="border-color: #666;" cellpadding="10">';
-				$message .= "<tr style='background: #eee;'><td><strong>Name:</strong> </td><td>" . strip_tags($_POST['first_name']) .' '. strip_tags($_POST['last_name']) ."</td></tr>";
+				$message .= "<tr style='background: #eee;'><td><strong>Name:</strong> </td><td>" . strip_tags($_POST['full_name'])."</td></tr>";
 				$message .= "<tr><td><strong>Email:</strong> </td><td>" . strip_tags($_POST['email']) . "</td></tr>";
-				$message .= "<tr><td><strong>Phone Number:</strong> </td><td>" . strip_tags($_POST['phone_number']) . "</td></tr>";
+				$message .= "<tr><td><strong>Phone Number:</strong> </td><td>" . strip_tags($_POST['phone']) . "</td></tr>";
 				$message .= "<tr><td><strong>Address:</strong> </td><td>" . $_POST['address'] . "</td></tr>";
-				$message .= "<tr><td><strong>Service required:</strong> </td><td>" . $_POST['sellist1'] . "</td></tr>";
+				$message .= "<tr><td><strong>Service required:</strong> </td><td>" . $_POST['estimate'] . "</td></tr>";
+				$message .= "<tr><td><strong>Message (Optional):</strong> </td><td>" . $_POST['message'] . "</td></tr>";
 				$message .= "</table>";
 				$message .= "</body></html>";
+				$message .= $_POST['message'];
 
 				//  MAKE SURE THE "FROM" EMAIL ADDRESS DOESN'T HAVE ANY NASTY STUFF IN IT
 				$pattern = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i";
@@ -26,26 +28,63 @@
 				// Mailing system
     				//   CHANGE THE BELOW VARIABLES TO YOUR NEEDS
 
-    			$to = 'Info@vusiroofing.com';
+						$to = 'info@vusiroofing.com';
+	    		//	$to = 'mr.niteshlangyan@gmail.com';
+					$emailfrom = "Info@vusiroofing.com";
+						$params = '-f ' . $emailfrom;
+	    			$subject = 'Vusi Roofing';
 
-    			$subject = 'Vusi Roofing';
+	    			$headers = "From: info@vusiroofing.com \r\n";
+	    			$headers .= "Reply-To: noreply@vusiroofing.com \r\n";
+	    			$headers .= "MIME-Version: 1.0\r\n";
+	    			$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-    			$headers = "From: contactus@coderzguild.website \r\n";
-    			$headers .= "Reply-To: noreply@coderzguild.website \r\n";
-    			$headers .= "MIME-Version: 1.0\r\n";
-    			$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+	                $thanksemail = $_POST['email'];
+//	                $message2 = 'Hi, '.$_POST['full_name'].', Thank you for reaching us. One of our executive will contact you soon.';
+					//$message2 ='<html><body>' . "\r\n";
+					//$message2 = "Thank you for getting in touch!\n\nWe have received your message and would like to thank you for writing to us. If your inquiry is urgent, please call (613) 266-2014 to talk to one of our staff members.\n\nOtherwise, we will reply by email as soon as possible.\n\nTalk to you soon, Vusi Roofing";
+				//	$message2.= "\r\n";
+					//$message2.=  "We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please call (613) 266-2014 to talk to one of our staff members. \n";
+					//$message2.= "\r\n";
+					//$message2.=  "Otherwise, we will reply by email as soon as possible. \n";
+					//$message2.= "\r\n";
+					//$message2.=  "Talk to you soon, Vusi Roofing";
+					//$message2 ='</html></body>' . "\r\n";
 
-                $thanksemail = $_POST['email'];
-                $message2 = 'Hi, '.$_POST['first_name'].', Thank you for reaching us. One of our executive will contact you soon.';
+					$message2 = "<html>
+					<body>
+					
+					<p>Thank you for getting in touch!</p>
+					<p>We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please call (613) 266-2014 to talk to one of our staff members.</p>
+					<p>Otherwise, we will reply by email as soon as possible.</p>
+					<p>Talk to you soon, Vusi Roofing</p>
+						</body>
+					</html>";
+					
+	                if (mail($to, $subject, $message, $headers,$params) && mail($thanksemail, $subject, $message2, $headers,$params)) {
+	                  header('Location: index.php?msg=success');
+	                } else {
+	                  header('Location: index.php?msg=fail');
+	                }
+				}
 
-                if (mail($to, $subject, $message, $headers) && mail($thanksemail, $subject, $message2, $headers)) {
-                  header('Location: index.php?msg=success');
-                } else {
-                  header('Location: index.php?msg=fail');
-                }
 			}
-
-		}
+    // 			$headers = "From: info@coderzguild.website \r\n";
+    // 			$headers .= "Reply-To: noreply@coderzguild.website \r\n";
+    // 			$headers .= "MIME-Version: 1.0\r\n";
+    // 			$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+		//
+    //             $thanksemail = $_POST['email'];
+    //             $message2 = 'Hi, '.$_POST['full_name'].', Thank you for reaching us. One of our executive will contact you soon.';
+		//
+    //             if (mail($to, $subject, $message, $headers) && mail($thanksemail, $subject, $message2, $headers)) {
+    //               header('Location: index.php?msg=success');
+    //             } else {
+    //               header('Location: index.php?msg=fail');
+    //             }
+		// 	}
+		//
+		// }
 
 
 

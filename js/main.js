@@ -73,6 +73,76 @@
     }
   });
 
+
+   // Services Smooth scroll for the links with .scrollto classes
+
+  function myFunction(x,y) {
+  if (x.matches) { // If media query matches
+      $('.anothe-service').on('click', function() {
+      var target = $('#Contact.hash');
+      var top_space = 0;
+
+        if ($('#services').length) {
+          top_space = $('#services').outerHeight();
+
+        }
+
+        $('html, body').animate({
+          scrollTop: target.offset().top + 3360
+
+        }, 1000, 'easeInOutExpo');
+        return false;
+
+  });
+  }
+  else {
+    $('.anothe-service').on('click', function() {
+      var target = $('#Contact.hash');
+      var top_space = 0;
+
+        if ($('#services').length) {
+          top_space = $('#services').outerHeight();
+
+        }
+
+        $('html, body').animate({
+          scrollTop: target.offset().top + 1920
+
+        }, 1500, 'easeInOutExpo');
+        return false;
+
+  });
+}
+  if (y.matches) { // If media query matches
+      $('.anothe-service').on('click', function() {
+      var target = $('#Contact.hash');
+      var top_space = 0;
+
+        if ($('#services').length) {
+          top_space = $('#services').outerHeight();
+
+        }
+
+        $('html, body').animate({
+          scrollTop: target.offset().top + 2300
+
+        }, 1000, 'easeInOutExpo');
+        return false;
+
+  });
+  }
+
+  //2300 destop
+  //3400 mobile
+}
+
+var y = window.matchMedia("(min-width: 2000px)")
+var x = window.matchMedia("(max-width: 768px)")
+myFunction(x,y) // Call listener function at run time
+x.addListener(myFunction)
+
+
+
   // Navigation active state on scroll
   var nav_sections = $('section');
   var main_nav = $('.main-nav, .mobile-nav');
@@ -80,11 +150,11 @@
 
   $(window).on('scroll', function () {
     var cur_pos = $(this).scrollTop();
-  
+
     nav_sections.each(function() {
       var top = $(this).offset().top - main_nav_height,
           bottom = top + $(this).outerHeight();
-  
+
       if (cur_pos >= top && cur_pos <= bottom) {
         main_nav.find('li').removeClass('active');
         main_nav.find('a[href="#'+$(this).attr('id')+'"]').parent('li').addClass('active');
@@ -106,7 +176,7 @@
     $('#portfolio-flters li').on( 'click', function() {
       $("#portfolio-flters li").removeClass('filter-active');
       $(this).addClass('filter-active');
-  
+
       portfolioIsotope.isotope({ filter: $(this).data('filter') });
     });
   });
@@ -129,4 +199,3 @@
   });
 
 })(jQuery);
-
