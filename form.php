@@ -1,4 +1,9 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';
+
 if (isset($_POST['submit'])) {
     $emailPattern = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
     $email = trim(strip_tags($_POST['email']));
@@ -21,23 +26,52 @@ if (isset($_POST['submit'])) {
     $message .= "</table>";
     $message .= "</body></html>";
 
-    // Email headers
-    $headers = "From: info@vusiroofing.com\r\n";
-    $headers .= "Reply-To: noreply@vusiroofing.com\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+    // Send email using PHPMailer
+    $mail = new PHPMailer(true);
 
-    // Thank you email
-    $thanksemail = $email;
-    $message2 = "<html><body><p>Thank you for getting in touch!</p>
-                 <p>We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please call (613) 266-2014 to talk to one of our staff members.</p>
-                 <p>Otherwise, we will reply by email as soon as possible.</p>
-                 <p>Talk to you soon, Vusi Roofing</p></body></html>";
+    try {
+        //Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';  // Set the SMTP server to send through
+        $mail->SMTPAuth = true;           // Enable SMTP authentication
+        $mail->Username = 'm10.jaber@gmail.com';  // SMTP username
+        $mail->Password = 'fvep quok uawr bfpa';  // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+        $mail->Port = 587;  // TCP port to connect to
 
-    if (mail('m10.jaber@gmail.com', 'Vusi Roofing', $message, $headers) && mail($thanksemail, 'Vusi Roofing', $message2, $headers)) {
+        //Recipients
+        $mail->setFrom('m10.jaber@gmail.com', 'Vusi Roofing');
+
+//        $mail->setFrom('info@vusiroofing.com', 'Vusi Roofing');
+        $mail->addAddress('m10.jaber@gmail.com', 'Admin');     // Add a recipient
+        $mail->addReplyTo('noreply@vusiroofing.com', 'No Reply');
+
+        // Content
+        $mail->isHTML(true);  // Set email format to HTML
+        $mail->Subject = 'Vusi Roofing Query';
+        $mail->Body    = $message;
+
+        $mail->send();
+        echo 'Message has been sent';
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        exit;
+    }
+
+    // Send thank you email to user
+    $mail->clearAddresses();
+    $mail->addAddress($email);  // The user's email
+    $mail->Subject = 'Thank you for contacting Vusi Roofing';
+    $mail->Body    = "<html><body><p>Thank you for getting in touch!</p>
+                     <p>We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please call (613) 266-2014 to talk to one of our staff members.</p>
+                     <p>Otherwise, we will reply by email as soon as possible.</p>
+                     <p>Talk to you soon, Vusi Roofing</p></body></html>";
+
+    if ($mail->send()) {
         header('Location: index.php?msg=success');
     } else {
         header('Location: index.php?msg=fail');
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
 ?>
