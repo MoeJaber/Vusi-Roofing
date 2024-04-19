@@ -6,7 +6,7 @@ require 'vendor/autoload.php';
 
 if (isset($_POST['submit'])) {
     $emailPattern = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
-    $email = trim(strip_tags($_POST['email']));
+    $email = trim(strip_tags($_POST['email'])); 
 
     if (!preg_match($emailPattern, $email)) {
         echo "The email address you entered was invalid. Please try again!";
@@ -33,14 +33,14 @@ if (isset($_POST['submit'])) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';  // Set the SMTP server to send through
         $mail->SMTPAuth = true;           // Enable SMTP authentication
-		$mail->Username = 'm10.jaber@gmail.com';  // SMTP username
-        $mail->Password = 'fvep quok uawr bfpa';  // SMTP password
+		$mail->Username = 'info@vusiroofing.com';  // SMTP username
+        $mail->Password = 'iqml ijsb rrxh iubj';  // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Enable TLS encryption
         $mail->Port = 587;  // TCP port to connect to
 
         //Recipients
         $mail->setFrom('info@vusiroofing.com', 'Vusi Roofing');
-        $mail->addAddress('m10.jaber@gmail.com', 'Admin');     // Add a recipient
+        $mail->addAddress('info@vusiroofing.com', 'Admin');     // Add a recipient
         $mail->addReplyTo('noreply@vusiroofing.com', 'No Reply');
 
         // Content
