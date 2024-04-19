@@ -28,8 +28,8 @@
 				// Mailing system
     				//   CHANGE THE BELOW VARIABLES TO YOUR NEEDS
 
-						$to = 'info@vusiroofing.com';
-	    		//	$to = 'mr.niteshlangyan@gmail.com';
+						//$to = 'info@vusiroofing.com';
+	    		$to = 'm10.jaber@gmail.com';
 					$emailfrom = "Info@vusiroofing.com";
 						$params = '-f ' . $emailfrom;
 	    			$subject = 'Vusi Roofing';

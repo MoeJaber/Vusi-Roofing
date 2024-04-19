@@ -726,7 +726,7 @@ items:3
 </script>
 
 <!-- Facebook Pixel Code -->
-<script>
+<!-- <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -741,7 +741,7 @@ items:3
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=590605841861569&ev=PageView&noscript=1"
 /></noscript>
-<!-- End Facebook Pixel Code -->
+End Facebook Pixel Code --> 
 
 <script type="text/javascript">
 window.onload = function() {
