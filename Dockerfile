@@ -2,14 +2,13 @@
 # https://hub.docker.com/_/php
 FROM php:8.0-apache
 
-# Install system dependencies for PHP extensions
+# Install system dependencies for PHP extensions and other utilities
 RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Configure PHP extensions
-RUN docker-php-ext-install -j "$(nproc)" opcache pdo_mysql
-RUN docker-php-ext-enable openssl
+    libssl-dev \ 
+     # for SSL/TLS support
+    && docker-php-ext-install -j "$(nproc)" pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*  
+    # Clean up
 
 # Configure PHP for Cloud Run.
 # Precompile PHP code with opcache.
