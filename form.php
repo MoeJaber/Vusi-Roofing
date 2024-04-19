@@ -26,7 +26,6 @@ if (isset($_POST['submit'])) {
     $message .= "</table>";
     $message .= "</body></html>";
 
-    // Send email using PHPMailer
     $mail = new PHPMailer(true);
 
     try {
@@ -34,15 +33,13 @@ if (isset($_POST['submit'])) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';  // Set the SMTP server to send through
         $mail->SMTPAuth = true;           // Enable SMTP authentication
-        $mail->Username = 'm10.jaber@gmail.com';  // SMTP username
+		$mail->Username = 'm10.jaber@gmail.com';  // SMTP username
         $mail->Password = 'fvep quok uawr bfpa';  // SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Enable TLS encryption
         $mail->Port = 587;  // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('m10.jaber@gmail.com', 'Vusi Roofing');
-
-//        $mail->setFrom('info@vusiroofing.com', 'Vusi Roofing');
+        $mail->setFrom('info@vusiroofing.com', 'Vusi Roofing');
         $mail->addAddress('m10.jaber@gmail.com', 'Admin');     // Add a recipient
         $mail->addReplyTo('noreply@vusiroofing.com', 'No Reply');
 
@@ -52,13 +49,12 @@ if (isset($_POST['submit'])) {
         $mail->Body    = $message;
 
         $mail->send();
-        echo 'Message has been sent';
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         exit;
     }
 
-    // Send thank you email to user
+    // Prepare thank you email
     $mail->clearAddresses();
     $mail->addAddress($email);  // The user's email
     $mail->Subject = 'Thank you for contacting Vusi Roofing';
@@ -69,9 +65,11 @@ if (isset($_POST['submit'])) {
 
     if ($mail->send()) {
         header('Location: index.php?msg=success');
+        exit;  // Ensure no further output is sent after header redirection
     } else {
-        header('Location: index.php?msg=fail');
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+		header('Location: index.php?msg=fail');
+        //echo "Thank you email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        exit;
     }
 }
 ?>
